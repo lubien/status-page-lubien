@@ -1,0 +1,29 @@
+{
+    log {
+        format console
+    }
+}
+
+:8080 {
+    bind 0.0.0.0
+
+	@replayable {
+        path /status/*
+        path /assets/*
+        path /api/status-page/*
+        path /icon.svg
+    }
+
+	header @replayable fly-replay "app=fly-uptime-kuma-lubien"
+    respond @replayable 200 {
+  		body "Replay"
+  		close
+   	}
+
+	redir / /status/lubien
+
+	respond 404 {
+		body "Not found"
+		close
+	}
+}
